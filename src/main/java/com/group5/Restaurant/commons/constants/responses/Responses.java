@@ -8,4 +8,5 @@ public interface Responses {
     String BAD_REQUEST = "Failed operation";
 
     String INTERNAL_SERVER_ERROR = "Internal Server error";
+    String ILLEGAL_ARGUMENTS = "The arguments are not valid";
 }

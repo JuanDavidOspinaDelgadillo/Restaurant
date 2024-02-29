@@ -10,7 +10,6 @@ import java.io.Serializable;
 @Builder
 @Data
 public class ObjectResponseDTO implements Serializable {
-    public String message;
     public int httpCode;
     public Object object;
 }

@@ -9,6 +9,7 @@ import com.group5.Restaurant.commons.domains.maps.mappers.ClientMapper;
 import com.group5.Restaurant.repositories.IClientRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -35,16 +36,16 @@ public class ClientServiceImpl implements IClientService{
     public ResponseEntity<ObjectResponseDTO> createClient(ClientDTO clientDTO) {
         try {
             Optional<ClientEntity> clientExist = this.repository.findById(clientDTO.getClientId());
-            if(clientExist.isEmpty()) {
-                ClientEntity clientEntity = this.mapper.convertClientDTOToClientEntity(clientDTO);
-                this.repository.save(clientEntity);
-                return ConstantsResponses.OK;
-            } else  {
-                return ConstantsResponses.BAD_REQUEST;
-            }
+            clientExist.ifPresentOrElse(client -> log.error(Responses.BAD_REQUEST + " " + HttpStatus.BAD_REQUEST.value()),
+                    () -> {
+                        ClientEntity clientEntity = this.mapper.convertClientDTOToClientEntity(clientDTO);
+                        this.repository.save(clientEntity);
+                    });
+            return ConstantsResponses.OK;
         } catch (Exception e) {
             log.error(Responses.INTERNAL_SERVER_ERROR + e);
             return ConstantsResponses.INTERNAL_SERVER_ERROR;
         }
     }
+
 }
