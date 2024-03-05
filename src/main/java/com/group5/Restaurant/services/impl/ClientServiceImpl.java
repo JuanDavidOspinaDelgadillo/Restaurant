@@ -1,4 +1,4 @@
-package com.group5.Restaurant.services;
+package com.group5.Restaurant.services.impl;
 
 import com.group5.Restaurant.commons.constants.responses.ConstantsResponses;
 import com.group5.Restaurant.commons.constants.responses.Responses;
@@ -7,6 +7,7 @@ import com.group5.Restaurant.commons.domains.dtos.ClientDTO;
 import com.group5.Restaurant.commons.domains.entities.ClientEntity;
 import com.group5.Restaurant.commons.domains.maps.mappers.ClientMapper;
 import com.group5.Restaurant.repositories.IClientRepository;
+import com.group5.Restaurant.services.interfaces.IClientService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 @Log4j2
-public class ClientServiceImpl implements IClientService{
+public class ClientServiceImpl implements IClientService {
 
     final IClientRepository repository;//Repository dependency injected
 

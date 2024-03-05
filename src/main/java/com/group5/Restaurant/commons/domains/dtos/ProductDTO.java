@@ -1,25 +1,26 @@
 package com.group5.Restaurant.commons.domains.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
+@Getter
+@Setter
 
 public class ProductDTO implements Serializable {
-    private String nombre;
-    private categoria categoriaProducto;
-    private String descripcion;
-    private Float precio;
-    private Boolean disponible;
+    private UUID productUuid;
+    private String name;
+    private category productCategory;
+    private String description;
+    private Float price;
+    private Boolean available;
 
-    public enum categoria{
+    public enum category{
         hamburguerAndHotDogs,Chiken,fish,meats,desserts,veganFood,kidsMeals;
     }
 }

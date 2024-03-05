@@ -1,4 +1,4 @@
-package com.group5.Restaurant.services;
+package com.group5.Restaurant.services.interfaces;
 
 import com.group5.Restaurant.commons.domains.ObjectResponseDTO;
 import com.group5.Restaurant.commons.domains.dtos.ClientDTO;
