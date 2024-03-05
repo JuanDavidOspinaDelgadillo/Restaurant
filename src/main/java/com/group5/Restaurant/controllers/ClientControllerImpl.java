@@ -3,7 +3,7 @@ package com.group5.Restaurant.controllers;
 import com.group5.Restaurant.commons.constants.endpoints.IClientEndpoints;
 import com.group5.Restaurant.commons.domains.ObjectResponseDTO;
 import com.group5.Restaurant.commons.domains.dtos.ClientDTO;
-import com.group5.Restaurant.services.IClientService;
+import com.group5.Restaurant.services.interfaces.IClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
