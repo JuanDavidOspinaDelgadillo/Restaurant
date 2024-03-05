@@ -6,5 +6,5 @@ import com.group5.Restaurant.commons.domains.dtos.ProductDTO;
 import org.springframework.http.ResponseEntity;
 
 public interface IProductService {
-    ResponseEntity<ObjectResponseDTO> createProduct(ProductDTO productDTO);
+    ResponseEntity<ObjectResponseDTO> updateProduct(ProductDTO productDTO);
 }
