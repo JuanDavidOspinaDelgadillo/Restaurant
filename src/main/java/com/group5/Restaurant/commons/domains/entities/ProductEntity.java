@@ -15,10 +15,10 @@ public class ProductEntity {
     private UUID productUuid;
 
     @Column(name = "product_name", length = 30)
-    private String name;
+    private String nameFantasy;
     @Enumerated(EnumType.STRING)
     @Column(name = "product_category", length = 20)
-    private ProductDTO.category productCategory;
+    private ProductDTO.category category;
 
     @Column(name = "product_description", length = 30)
     private String description;

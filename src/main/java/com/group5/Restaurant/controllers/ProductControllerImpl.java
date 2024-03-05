@@ -20,11 +20,11 @@ public class ProductControllerImpl implements IProductController {
     final ProductServiceImpl service;
     @Override
     @PutMapping(IProductEndpints.PRODUCT_UPDATE)
-    public ResponseEntity<ObjectResponseDTO> updateProduct(@PathVariable UUID uuid, @RequestBody ProductDTO productDTO) {
+    public ResponseEntity<ObjectResponseDTO> updateProduct(@PathVariable UUID uuid, ProductDTO productDTO) {
         return this.service.updateProduct(productDTO);
     }
     @DeleteMapping(IProductEndpints.PRODUCT_DELETE)
-    public  ResponseEntity<ObjectResponseDTO> deleteProduct(@PathVariable UUID uuid,    @RequestBody ProductDTO productDTO){
-        return  this.service.deleteProduct(productDTO);
+    public  ResponseEntity<ObjectResponseDTO> deleteProduct(@PathVariable UUID uuid){
+        return  this.service.deleteProduct(uuid);
     }
 }

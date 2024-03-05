@@ -17,6 +17,14 @@ public class ConstantsResponses {
             .httpCode(HttpStatus.BAD_REQUEST.value())
             .object(Responses.BAD_REQUEST)
             .build());
+    /**
+     * Bad Request Operation
+     * Code 409
+     */
+    public static final ResponseEntity<ObjectResponseDTO> CONFLICT = ResponseEntity.status(HttpStatus.CONFLICT).body(ObjectResponseDTO.builder()
+            .httpCode(HttpStatus.CONFLICT.value())
+            .object(Responses.CONFLICT1)
+            .build());
 
     /**
      * Internal Server Error operation

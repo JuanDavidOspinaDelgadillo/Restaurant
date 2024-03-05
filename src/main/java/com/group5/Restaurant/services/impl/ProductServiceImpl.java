@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import com.group5.Restaurant.commons.constants.responses.ConstantsResponses;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Log4j2
@@ -48,13 +49,12 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public ResponseEntity<ObjectResponseDTO> deleteProduct(ProductDTO productDTO) {
+    public ResponseEntity<ObjectResponseDTO> deleteProduct(UUID uuid) {
         try {
-            Optional<ProductEntity> find = this.iProductRepository.findById(productDTO.getProductUuid());
+            Optional<ProductEntity> find = this.iProductRepository.findById(uuid);
             System.out.println(find.isPresent());
             if (find.isPresent()){
-                ProductEntity productEntity= this.mapper.convertProductDTOToProductEntity(productDTO);
-                this.iProductRepository.delete(productEntity);
+                this.iProductRepository.delete(find.get());
                 return ConstantsResponses.OK;
             }else{
                 return ConstantsResponses.BAD_REQUEST;
