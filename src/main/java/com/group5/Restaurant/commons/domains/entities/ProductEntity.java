@@ -1,29 +1,51 @@
 package com.group5.Restaurant.commons.domains.entities;
 
-import com.group5.Restaurant.commons.domains.dtos.ProductDTO;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
-import java.util.UUID;
+import java.util.List;
 
 @Entity(name = "product_tbl")
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "product_uuid")
-    private UUID productUuid;
+    private String productUUID;
 
-    @Column(name = "product_name", length = 30)
-    private String name;
-    @Enumerated(EnumType.STRING)
-    @Column(name = "product_category", length = 20)
-    private ProductDTO.category productCategory;
+    @Column(name = "product_fantasy_name")
+    private String productFantasyName;
 
-    @Column(name = "product_description", length = 30)
-    private String description;
-    @Column(name = "product_price")
-    private Float price;
-    @Column(name = "product_available")
-    private Boolean available;
+    @Column(name = "product_category")
+    private Category productCategory;
+
+    @Column(name = "product_description", length = 511)
+    private String productDescription;
+
+    @Column(name = "product_price_without_iva")
+    private Double productPriceWithoutIva;
+
+    @Column(name = "product_enable")
+    private Boolean productEnabled;
+
+    @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    @JsonIgnore
+    private List<AddressesEntity> addresesList;
+
+    public enum Category{
+        HAMBURGERS_AND_HOT_DOGS,
+        CHICKEN,
+        FISH,
+        MEATS,
+        DESSERTS,
+        VEGAN_FOOD,
+        KIDS_MEAL
+    }
 }

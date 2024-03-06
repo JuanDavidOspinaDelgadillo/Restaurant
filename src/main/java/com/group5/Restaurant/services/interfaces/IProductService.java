@@ -1,11 +1,11 @@
 package com.group5.Restaurant.services.interfaces;
 
-import com.group5.Restaurant.commons.domains.ObjectResponseDTO;
-import com.group5.Restaurant.commons.domains.dtos.ClientDTO;
 import com.group5.Restaurant.commons.domains.dtos.ProductDTO;
+import com.group5.Restaurant.commons.responsesObjectDTO.ResponseObjectDTO;
 import org.springframework.http.ResponseEntity;
 
 public interface IProductService {
-    ResponseEntity<ObjectResponseDTO> updateProduct(ProductDTO productDTO);
-    ResponseEntity<ObjectResponseDTO> deleteProduct(ProductDTO productDTO);
+    ResponseEntity<ResponseObjectDTO> createProduct(ProductDTO productDTO);
+    ResponseEntity<ResponseObjectDTO> updateProduct(ProductDTO productDTO);
+    ResponseEntity<ResponseObjectDTO> deleteProduct(ProductDTO productDTO);
 }

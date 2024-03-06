@@ -1,7 +1,12 @@
 package com.group5.Restaurant.commons.domains.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import java.util.List;
 
 /**
  * Entity to map the object ClientEntity to a table in the DB with its columns
@@ -11,10 +16,6 @@ import lombok.Data;
 public class ClientEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_id")
-    private Long clientId;
-
     @Column(name = "client_document", length = 20)
     private String clientDocument;
 
@@ -27,6 +28,11 @@ public class ClientEntity {
     @Column(name = "client_phone_number", length = 10)
     private Short clientPhoneNumber;
 
-    @Column(name = "client_address", length = 500)
+    @Column(name = "client_address", length = 511)
     private String clientAddress;
+
+    @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL)
+    @Fetch(FetchMode.SELECT)
+    @JsonIgnore
+    private List<AddressesEntity> addressesEntity;
 }

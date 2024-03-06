@@ -1,8 +1,9 @@
-package com.group5.Restaurant.controllers;
+package com.group5.Restaurant.controllers.impl;
 
 import com.group5.Restaurant.commons.constants.endpoints.IClientEndpoints;
-import com.group5.Restaurant.commons.domains.ObjectResponseDTO;
 import com.group5.Restaurant.commons.domains.dtos.ClientDTO;
+import com.group5.Restaurant.commons.responsesObjectDTO.ResponseObjectDTO;
+import com.group5.Restaurant.controllers.interfaces.IClientController;
 import com.group5.Restaurant.services.interfaces.IClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(IClientEndpoints.CLIENT_END_POINT)
 @AllArgsConstructor
-public class ClientControllerImpl implements IClientController{
+public class ClientControllerImpl implements IClientController {
 
     final IClientService service;//Service dependency injected
 
@@ -28,7 +29,7 @@ public class ClientControllerImpl implements IClientController{
      */
     @Override
     @GetMapping(IClientEndpoints.CLIENT_CREATE)
-    public ResponseEntity<ObjectResponseDTO> createClient(ClientDTO clientDTO) {
+    public ResponseEntity<ResponseObjectDTO> createClient(ClientDTO clientDTO) {
         return this.service.createClient(clientDTO);
     }
 }

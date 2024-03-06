@@ -8,19 +8,12 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@Getter
-@Setter
-
+@Data
 public class ProductDTO implements Serializable {
-    private UUID productUuid;
-    private String name;
-    private category productCategory;
-    private String description;
-    private Float price;
-    private Boolean available;
-
-    public enum category{
-        hamburguerAndHotDogs,Chiken,fish,meats,desserts,veganFood,kidsMeals;
-    }
+    private String productUUID;
+    private String productName;
+    private String productCategory;
+    private String productDescription;
+    private Double productPrice;
+    private Boolean isProductAvailable;
 }
