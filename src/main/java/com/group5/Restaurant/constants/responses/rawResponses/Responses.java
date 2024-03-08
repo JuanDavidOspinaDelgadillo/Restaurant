@@ -1,4 +1,4 @@
-package com.group5.Restaurant.commons.constants.responses;
+package com.group5.Restaurant.constants.responses.rawResponses;
 
 /**
  * Raw responses to each situation

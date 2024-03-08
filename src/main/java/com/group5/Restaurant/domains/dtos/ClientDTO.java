@@ -1,4 +1,4 @@
-package com.group5.Restaurant.commons.domains.dtos;
+package com.group5.Restaurant.domains.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,10 +15,9 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 public class ClientDTO implements Serializable {
-    private Long clientId;
     private String clientDocument;
     private String clientName;
     private String clientEmail;
-    private Short clientPhoneNumber;
+    private String clientPhoneNumber;
     private String clientAddress;
 }

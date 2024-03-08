@@ -1,10 +1,13 @@
-package com.group5.Restaurant.commons.domains.dtos;
+package com.group5.Restaurant.domains.dtos;
 
 import lombok.*;
 
 import java.io.Serializable;
 import java.util.UUID;
 
+/**
+ * DTO object to send and receive information of the entity ProductEntity
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

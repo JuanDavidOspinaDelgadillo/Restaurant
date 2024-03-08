@@ -1,11 +1,14 @@
-package com.group5.Restaurant.commons.domains.maps.mappers;
-import com.group5.Restaurant.commons.constants.responses.Responses;
-import com.group5.Restaurant.commons.domains.dtos.ProductDTO;
-import com.group5.Restaurant.commons.domains.entities.ProductEntity;
-import com.group5.Restaurant.commons.domains.maps.Mapper;
+package com.group5.Restaurant.domains.maps.mappers;
+import com.group5.Restaurant.constants.responses.rawResponses.Responses;
+import com.group5.Restaurant.domains.dtos.ProductDTO;
+import com.group5.Restaurant.domains.entities.ProductEntity;
+import com.group5.Restaurant.domains.maps.Mapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+/**
+ * Use ModelMapper already created to map the entity ProductEntity
+ */
 @Component
 @Log4j2
 public class ProductMapper {

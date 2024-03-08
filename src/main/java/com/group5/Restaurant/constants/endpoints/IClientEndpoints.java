@@ -1,4 +1,4 @@
-package com.group5.Restaurant.commons.constants.endpoints;
+package com.group5.Restaurant.constants.endpoints;
 
 /**
  *  Endpoints of the Client Controller
@@ -6,4 +6,5 @@ package com.group5.Restaurant.commons.constants.endpoints;
 public interface IClientEndpoints {
     String CLIENT_END_POINT = "/client";
     String CLIENT_CREATE = "/create";
+    String CLIENT_READ = "/read/{clientDocument}";
 }

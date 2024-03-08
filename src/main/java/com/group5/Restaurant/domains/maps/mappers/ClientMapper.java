@@ -1,9 +1,9 @@
-package com.group5.Restaurant.commons.domains.maps.mappers;
+package com.group5.Restaurant.domains.maps.mappers;
 
-import com.group5.Restaurant.commons.constants.responses.Responses;
-import com.group5.Restaurant.commons.domains.dtos.ClientDTO;
-import com.group5.Restaurant.commons.domains.entities.ClientEntity;
-import com.group5.Restaurant.commons.domains.maps.Mapper;
+import com.group5.Restaurant.constants.responses.rawResponses.Responses;
+import com.group5.Restaurant.domains.dtos.ClientDTO;
+import com.group5.Restaurant.domains.entities.ClientEntity;
+import com.group5.Restaurant.domains.maps.Mapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
