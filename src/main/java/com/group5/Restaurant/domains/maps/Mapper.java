@@ -1,4 +1,4 @@
-package com.group5.Restaurant.commons.domains.maps;
+package com.group5.Restaurant.domains.maps;
 
 import org.modelmapper.ModelMapper;
 

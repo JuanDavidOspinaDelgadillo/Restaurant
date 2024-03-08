@@ -1,17 +1,21 @@
 package com.group5.Restaurant.services.impl;
 
-import com.group5.Restaurant.commons.constants.responses.ConstantResponses;
-import com.group5.Restaurant.commons.domains.entities.ClientEntity;
-import com.group5.Restaurant.commons.domains.dtos.ClientDTO;
-import com.group5.Restaurant.commons.domains.maps.mappers.ClientMapper;
-import com.group5.Restaurant.commons.responsesObjectDTO.ResponseObjectDTO;
+import com.group5.Restaurant.constants.responses.constantResponses.ConstantResponses;
+import com.group5.Restaurant.constants.responses.responseCodes.ResponseCodes;
+import com.group5.Restaurant.domains.entities.ClientEntity;
+import com.group5.Restaurant.domains.dtos.ClientDTO;
+import com.group5.Restaurant.domains.maps.mappers.ClientMapper;
+import com.group5.Restaurant.constants.responses.objectResponseDTO.CorrectResponseDTO;
+import com.group5.Restaurant.constants.responses.objectResponseDTO.ObjectResponseDTO;
 import com.group5.Restaurant.repositories.IClientRepository;
 import com.group5.Restaurant.services.interfaces.IClientService;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 /**
@@ -32,18 +36,35 @@ public class ClientServiceImpl implements IClientService {
      * @return Information referred of the operation result
      */
     @Override
-    public ResponseEntity<ResponseObjectDTO> createClient(ClientDTO clientDTO) {
+    public ResponseEntity<ObjectResponseDTO> createClient(ClientDTO clientDTO) {
         try {
-            Optional<ClientEntity> clientExist = this.repository.findById(clientDTO.getClientId());
+            Optional<ClientEntity> clientExist = this.repository.findById(clientDTO.getClientDocument());
             if(clientExist.isEmpty()) {
                 ClientEntity clientEntity = this.mapper.convertClientDTOToClientEntity(clientDTO);
                 this.repository.save(clientEntity);
-                return ConstantResponses.OK.get();
+                return ConstantResponses.OK.apply("Correct operation with client" + clientDTO);
             } else {
-                return ConstantResponses.BAD_REQUEST.get();
+                return ConstantResponses.BAD_REQUEST.apply("Te client " + clientDTO + "already exist", ResponseCodes.ALREADY_EXIST);
             }
-        } catch (RuntimeException e) {
-            return ConstantResponses.INTERNAL_SERVER_ERROR.apply(e);
+        } catch (Exception e) {
+            return ConstantResponses.INTERNAL_SERVER_ERROR.apply("was an error working on the information of the client: " + clientDTO.toString(), e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<ObjectResponseDTO> readClient(String clientDocument) {
+        try {
+            Optional<ClientEntity> clientExist = this.repository.findById(clientDocument);
+            return clientExist.<ResponseEntity<ObjectResponseDTO>>map(clientEntity -> ResponseEntity.ok().body(CorrectResponseDTO.builder()
+                            .timeStamp(LocalDateTime.now())
+                            .code(ResponseCodes.OK)
+                            .description("The client with document " + clientDocument + "exists!")
+                            .object(clientEntity)
+                            .httpStatusCode(HttpStatus.OK.value())
+                            .build()))
+                    .orElseGet(() -> ConstantResponses.BAD_REQUEST.apply("Client with document " + clientDocument + "doesnt exist", ResponseCodes.DOESNT_EXIST));
+        } catch (Exception e) {
+            return ConstantResponses.INTERNAL_SERVER_ERROR.apply("Was an error searching the client with this information: " + clientDocument, e);
         }
     }
 }

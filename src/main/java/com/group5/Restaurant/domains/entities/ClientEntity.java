@@ -1,4 +1,4 @@
-package com.group5.Restaurant.commons.domains.entities;
+package com.group5.Restaurant.domains.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -26,7 +26,7 @@ public class ClientEntity {
     private String clientEmail;
 
     @Column(name = "client_phone_number", length = 10)
-    private Short clientPhoneNumber;
+    private String clientPhoneNumber;
 
     @Column(name = "client_address", length = 511)
     private String clientAddress;

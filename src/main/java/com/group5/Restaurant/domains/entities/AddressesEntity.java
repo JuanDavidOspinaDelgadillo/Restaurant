@@ -1,4 +1,4 @@
-package com.group5.Restaurant.commons.domains.entities;
+package com.group5.Restaurant.domains.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -10,6 +10,9 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
+/**
+ * Entity to map the object AddressesEntity to a table in the DB with its columns
+ */
 @Entity(name = "addresses_tbl")
 @AllArgsConstructor
 @NoArgsConstructor
