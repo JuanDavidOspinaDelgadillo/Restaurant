@@ -46,6 +46,12 @@ public class ProductControllerImpl implements IProductController {
         return this.service.createProduct(productDTO);
     }
 
+    @Override
+    @GetMapping(IProductEndpoints.PRODUCT_READ)
+    public ResponseEntity<ObjectResponseDTO> readProduct(@PathVariable String productUUID) {
+        return this.service.readProduct(productUUID);
+    }
+
     /**
      * Update a product
      * @param productUUID ID reference of the product
