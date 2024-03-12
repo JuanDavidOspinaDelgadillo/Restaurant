@@ -32,4 +32,10 @@ public class ClientControllerImpl implements IClientController {
     public ResponseEntity<ResponseObjectDTO> createClient(ClientDTO clientDTO) {
         return this.service.createClient(clientDTO);
     }
+
+    @Override
+    @PutMapping(IClientEndpoints.CLIENT_UPDATE)
+    public ResponseEntity<ResponseObjectDTO> updateClient @PathVariable String clientDocument, @RequestBody ClientDTO clientDTO) {
+        return this.service.updateClient(clientDTO);
+    }
 }

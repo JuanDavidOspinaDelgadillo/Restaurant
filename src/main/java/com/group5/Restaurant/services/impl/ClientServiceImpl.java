@@ -46,4 +46,22 @@ public class ClientServiceImpl implements IClientService {
             return ConstantResponses.INTERNAL_SERVER_ERROR.apply(e);
         }
     }
+
+    @Override
+    public ResponseEntity<ResponseObjectDTO> updateClient(ClientDTO clientDTO) {
+        try{
+            Optional<ClientEntity> find = this.iClientRepository.findByclientDocument(clientDTO.getclientDocument());
+            System.out.println(find.isPresent());
+            if (find.isPresent()){
+                ClientEntity clientEntity = this.mapper.convertClientDTOToClientEntity(clientDTO);
+                this.iClientRepository.save(clientEntity);
+                return ConstantResponses.OK.get();
+            }else {
+                return ConstantResponses.BAD_REQUEST.get();
+            }
+        }catch (RuntimeException e){
+            log.error(Responses.INTERNAL_SERVER_ERROR + e);
+            return ConstantResponses.INTERNAL_SERVER_ERROR.apply(e);
+        }
+    }
 }

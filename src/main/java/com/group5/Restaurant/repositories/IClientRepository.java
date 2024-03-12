@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository;
  * Connection to the DB through spring stereotype @Repository
  */
 @Repository
-public interface IClientRepository extends JpaRepository<ClientEntity, Long> {}
+public interface IClientRepository extends JpaRepository<ClientEntity, Long> {
+    Optional<ClientEntity> findByclientDocument(String clientDocument);
+}

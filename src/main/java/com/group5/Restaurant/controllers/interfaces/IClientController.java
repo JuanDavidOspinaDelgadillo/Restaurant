@@ -12,4 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public interface IClientController {
     @PostMapping
     ResponseEntity<ResponseObjectDTO> createClient(ClientDTO clientDTO);
+    @PostMapping
+    ResponseEntity<ResponseObjectDTO> updateClient(@PathVariable String clientDocument, @RequestBody ClientDTO clientDTO);
+
 }

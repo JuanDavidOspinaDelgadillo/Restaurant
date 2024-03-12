@@ -10,4 +10,5 @@ import org.springframework.http.ResponseEntity;
  */
 public interface IClientService {
     ResponseEntity<ResponseObjectDTO> createClient(ClientDTO clientDTO);
+    ResponseEntity<ResponseObjectDTO> updateClient(ClientDTO clientDTO);
 }
