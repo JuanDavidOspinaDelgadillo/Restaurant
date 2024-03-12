@@ -73,4 +73,17 @@ public class ClientControllerImpl implements IClientController {
     public ResponseEntity<ObjectResponseDTO> readClient(@PathVariable String clientDocument) {
         return this.service.readClient(clientDocument);
     }
+
+    @Override
+    @DeleteMapping(IClientEndpoints.CLIENT_DELETE)
+    @Operation(summary = "Create a new client")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = Responses.OK, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "400", description = Responses.BAD_REQUEST, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "409", description = Responses.CONFLICT, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "500", description = Responses.INTERNAL_SERVER_ERROR, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))})
+    })
+    public ResponseEntity<ObjectResponseDTO> deleteClient(@PathVariable String clientDocument) {
+        return this.service.deleteClient(clientDocument);
+    }
 }

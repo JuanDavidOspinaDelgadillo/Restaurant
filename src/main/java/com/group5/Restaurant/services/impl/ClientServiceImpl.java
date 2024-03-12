@@ -1,6 +1,7 @@
 package com.group5.Restaurant.services.impl;
 
 import com.group5.Restaurant.constants.responses.constantResponses.ConstantResponses;
+import com.group5.Restaurant.constants.responses.rawResponses.Responses;
 import com.group5.Restaurant.constants.responses.responseCodes.ResponseCodes;
 import com.group5.Restaurant.domains.entities.ClientEntity;
 import com.group5.Restaurant.domains.dtos.ClientDTO;
@@ -65,6 +66,23 @@ public class ClientServiceImpl implements IClientService {
                     .orElseGet(() -> ConstantResponses.BAD_REQUEST.apply("Client with document " + clientDocument + "doesnt exist", ResponseCodes.DOESNT_EXIST));
         } catch (Exception e) {
             return ConstantResponses.INTERNAL_SERVER_ERROR.apply("Was an error searching the client with this information: " + clientDocument, e);
+        }
+    }
+
+    @Override
+    public ResponseEntity<ObjectResponseDTO> deleteClient(String clientDocument) {
+        try {
+            Optional<ClientEntity> clientExist = this.repository.findById(clientDocument);
+            if (clientExist.isPresent()) {
+                this.repository.deleteById(clientDocument);
+                return ConstantResponses.OK.apply(ResponseCodes.OK);
+            }
+            else {
+                return ConstantResponses.CONFLICT.apply(ResponseCodes.DOESNT_EXIST);
+            }
+        } catch (Exception e) {
+            log.error(Responses.INTERNAL_SERVER_ERROR, e);
+            return ConstantResponses.INTERNAL_SERVER_ERROR.apply(ResponseCodes.INTERNAL_SERVER_ERROR, e);
         }
     }
 }
