@@ -10,4 +10,5 @@ import org.springframework.http.ResponseEntity;
 public interface IClientService {
     ResponseEntity<ObjectResponseDTO> createClient(ClientDTO clientDTO);
     ResponseEntity<ObjectResponseDTO> readClient(String clientDocument);
+    ResponseEntity<ObjectResponseDTO> deleteClient(String clientDocument);
 }
