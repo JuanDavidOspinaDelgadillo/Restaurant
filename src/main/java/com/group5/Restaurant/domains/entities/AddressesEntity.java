@@ -34,13 +34,11 @@ public class AddressesEntity {
 
     @ManyToOne
     @JoinColumn(name = "product_uuid")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnore
     private ProductEntity productEntity;
 
     @ManyToOne
-    @JoinColumn(name = "client-document")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JoinColumn(name = "client_document")
     @JsonIgnore
     private ClientEntity clientEntity;
 }
