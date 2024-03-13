@@ -22,4 +22,14 @@ public class ClientMapper {
         }
         return clientEntity;
     }
+
+    public ClientDTO convertClientEntityToClientDTO(ClientEntity clientEntity) {
+        ClientDTO clientDTO = new ClientDTO();
+        try {
+            clientDTO = Mapper.modelMapper().map(clientEntity, ClientDTO.class);
+        } catch (Exception e) {
+            log.error(Responses.INTERNAL_SERVER_ERROR, e);
+        }
+        return clientDTO;
+    }
 }

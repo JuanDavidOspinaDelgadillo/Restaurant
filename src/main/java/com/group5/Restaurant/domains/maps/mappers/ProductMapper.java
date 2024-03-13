@@ -22,4 +22,14 @@ public class ProductMapper {
         }
         return productEntity;
     }
+
+    public ProductDTO converterProductEntityToProductDTO(ProductEntity productEntity) {
+        ProductDTO productDTO = new ProductDTO();
+        try {
+            productDTO = Mapper.modelMapper().map(productEntity, ProductDTO.class);
+        } catch (Exception e) {
+            log.error(Responses.INTERNAL_SERVER_ERROR);
+        }
+        return productDTO;
+    }
 }

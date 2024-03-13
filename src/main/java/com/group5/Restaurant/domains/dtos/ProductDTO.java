@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 public class ProductDTO implements Serializable {
     private String productUUID;
-    private String productName;
+    private String productFantasyName;
     private String productCategory;
     private String productDescription;
     private Double productPrice;

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.hibernate.query.Order;
 
 import java.util.List;
 
@@ -17,7 +18,10 @@ public class ClientEntity {
 
     @Id
     @Column(name = "client_document", length = 20)
-    private String clientDocument;
+    private Long clientDocument;
+
+    @Column(name = "client_document_type")
+    private String clientDocumentType;
 
     @Column(name = "client_name")
     private String clientName;
@@ -34,5 +38,5 @@ public class ClientEntity {
     @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
     @JsonIgnore
-    private List<AddressesEntity> addressesEntity;
+    private List<OrderEntity> addressesEntity;
 }
