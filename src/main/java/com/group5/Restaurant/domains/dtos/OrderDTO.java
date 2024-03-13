@@ -18,7 +18,11 @@ import java.time.LocalDateTime;
 public class OrderDTO implements Serializable {
     private Short orderQuantity;
     private String orderAdditionalInformation;
-    private Integer orderSubTotal;
+    private Double orderSubTotal;
+    private Double orderTax;
+    private Double orderTotalPrice;
+    private Boolean orderDelivered;
+    private LocalDateTime orderDeliveredDate;
     private String productUUID;
     private Long clientDocument;
 }

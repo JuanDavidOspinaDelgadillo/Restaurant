@@ -30,6 +30,21 @@ public class OrderEntity {
     @Column(name = "order_additional_information")
     private String orderAdditionalInformation;
 
+    @Column(name = "order_sub_total")
+    private Double orderSubTotal;
+
+    @Column(name = "order_tax")
+    private Double orderTax;
+
+    @Column(name = "order_total_price")
+    private Double orderTotalPrice;
+
+    @Column(name = "order_delivered")
+    private Boolean orderDelivered;
+
+    @Column(name = "order_delivered_date")
+    private LocalDateTime orderDeliveredDate;
+
     @ManyToOne
     @JoinColumn(name = "product_uuid")
     @JsonIgnore

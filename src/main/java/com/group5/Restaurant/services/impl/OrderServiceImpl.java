@@ -89,11 +89,30 @@ public class OrderServiceImpl implements IOrderService {
     }
 
     @Override
-    public ObjectResponseDTO updateOrder(String productUUID, LocalDateTime timeStamp) {
+    public ObjectResponseDTO updateOrder(String productUUID, LocalDateTime deliveredDate) {
         try {
-            Optional<ProductEntity> productExist = this.productRepository.findByProductUUID(productUUID);
-            Optional<OrderEntity> orderRelatedWithProductExist = this.repository.findBy
-            if()
+            Optional<OrderEntity> orderRelatedWithProductExist = this.repository.findByProductUUID(productUUID);
+            if(orderRelatedWithProductExist.isPresent()) {
+                orderRelatedWithProductExist.get().setOrderDelivered(true);
+                orderRelatedWithProductExist.get().setOrderDeliveredDate(deliveredDate);
+                this.repository.save(orderRelatedWithProductExist.get());
+                OrderDTO orderDTO = this.mapper.convertOrderEntityToOrderDTO(orderRelatedWithProductExist.get());
+                return CorrectResponseDTO.builder()
+                        .object(orderDTO)
+                        .timeStamp(LocalDateTime.now())
+                        .description(Responses.OK)
+                        .code(ResponseCodes.OK)
+                        .httpStatusCode(HttpStatus.OK.value())
+                        .build();
+            } else {
+                return WrongResponseDTO.builder()
+                        .exception(new NotFoundException())
+                        .timeStamp(LocalDateTime.now())
+                        .httpStatusCode(HttpStatus.NOT_FOUND.value())
+                        .description("The order related with this product UUID doesnt exist")
+                        .code(ResponseCodes.DOESNT_EXIST)
+                        .build();
+            }
         } catch (Exception e) {
             log.error(Responses.INTERNAL_SERVER_ERROR, e);
             return WrongResponseDTO.builder()
