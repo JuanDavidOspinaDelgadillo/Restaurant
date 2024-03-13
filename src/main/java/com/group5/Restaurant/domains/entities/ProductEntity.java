@@ -26,21 +26,21 @@ public class ProductEntity {
     private String productFantasyName;
 
     @Column(name = "product_category")
-    private Category productCategory;
+    private String productCategory;
 
     @Column(name = "product_description", length = 511)
     private String productDescription;
 
-    @Column(name = "product_price_without_iva")
-    private Double productPriceWithoutIva;
+    @Column(name = "product_price")
+    private Double productPrice;
 
-    @Column(name = "product_enable")
-    private Boolean productEnabled;
+    @Column(name = "product_available")
+    private Boolean isProductAvailable;
 
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
     @JsonIgnore
-    private List<AddressesEntity> addresesList;
+    private List<OrderEntity> addresesList;
 
     public enum Category{
         HAMBURGERS_AND_HOT_DOGS,

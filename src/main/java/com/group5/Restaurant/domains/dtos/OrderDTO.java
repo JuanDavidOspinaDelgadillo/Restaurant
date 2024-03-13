@@ -15,10 +15,14 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AddressesDTO implements Serializable {
-    private LocalDateTime addressesDateAndTime;
-    private Short addressesAmount;
-    private String addressesAdditionalInformation;
+public class OrderDTO implements Serializable {
+    private Short orderQuantity;
+    private String orderAdditionalInformation;
+    private Double orderSubTotal;
+    private Double orderTax;
+    private Double orderTotalPrice;
+    private Boolean orderDelivered;
+    private LocalDateTime orderDeliveredDate;
     private String productUUID;
-    private String clientDocument;
+    private Long clientDocument;
 }

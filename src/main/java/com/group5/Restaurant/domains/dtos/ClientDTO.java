@@ -15,7 +15,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Data
 public class ClientDTO implements Serializable {
-    private String clientDocument;
+    private Long clientDocument;
+    private String clientDocumentType;
     private String clientName;
     private String clientEmail;
     private String clientPhoneNumber;
