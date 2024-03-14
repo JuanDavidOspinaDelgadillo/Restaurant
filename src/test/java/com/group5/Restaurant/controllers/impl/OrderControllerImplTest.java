@@ -4,10 +4,10 @@ import com.group5.Restaurant.constants.responses.objectResponseDTO.CorrectRespon
 import com.group5.Restaurant.constants.responses.objectResponseDTO.ObjectResponseDTO;
 import com.group5.Restaurant.constants.responses.rawResponses.Responses;
 import com.group5.Restaurant.constants.responses.responseCodes.ResponseCodes;
-import com.group5.Restaurant.domains.dtos.ClientDTO;
+import com.group5.Restaurant.domains.dtos.OrderDTO;
 import com.group5.Restaurant.errors.exceptions.BadRequestException;
-import com.group5.Restaurant.errors.validations.ClientDTOValidation;
-import com.group5.Restaurant.services.interfaces.IClientService;
+import com.group5.Restaurant.errors.validations.OrderDTOValidation;
+import com.group5.Restaurant.services.interfaces.IOrderService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,22 +18,24 @@ import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ClientControllerImplTest {
-
+public class OrderControllerImplTest {
     @InjectMocks
-    ClientControllerImpl controller;
+    OrderControllerImpl controller;
+
     @Mock
-    IClientService service;
+    IOrderService service;
+
     @Mock
-    ClientDTOValidation validator;
+    OrderDTOValidation validator;
 
     @Test
-    void testCreateClient_whenClientDTOIsValid() throws BadRequestException {
-        ClientDTO clientDTO = new ClientDTO();
+    void testCreateOrder_whenOrderDTOIsValid() throws BadRequestException {
+        OrderDTO orderDTO = new OrderDTO();
         ResponseEntity<ObjectResponseDTO> expectedResponse = ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(CorrectResponseDTO.builder()
                         .httpStatusCode(HttpStatus.OK.value())
@@ -41,11 +43,11 @@ class ClientControllerImplTest {
                         .description(Responses.OK)
                         .timeStamp(LocalDateTime.now())
                         .code(ResponseCodes.OK)
-                        .object(clientDTO)
+                        .object(orderDTO)
                         .build());
-        doNothing().when(this.validator).validateClientDTO(clientDTO);
-        when(service.createClient(clientDTO)).thenReturn(expectedResponse.getBody());
-        ResponseEntity<ObjectResponseDTO> responseEntity = this.controller.createClient(clientDTO);
+        doNothing().when(this.validator).validateOrderDTO(orderDTO);
+        when(this.service.createOrder(orderDTO)).thenReturn(expectedResponse.getBody());
+        ResponseEntity<ObjectResponseDTO> responseEntity = this.controller.createOrder(orderDTO);
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals(expectedResponse.getBody(), responseEntity.getBody());
     }

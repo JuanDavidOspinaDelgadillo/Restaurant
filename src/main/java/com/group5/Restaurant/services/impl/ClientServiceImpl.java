@@ -18,7 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -40,11 +42,9 @@ public class ClientServiceImpl implements IClientService {
     @Override
     public ObjectResponseDTO createClient(ClientDTO clientDTO) {
         try {
-
             Optional<ClientEntity> clientExist = this.repository.findById(clientDTO.getClientDocument());
             if(clientExist.isEmpty()) {
                 ClientEntity clientEntity = this.mapper.convertClientDTOToClientEntity(clientDTO);
-                clientEntity.setAddressesEntity(null);
                 this.repository.save(clientEntity);
                 return CorrectResponseDTO.builder()
                         .httpStatusCode(HttpStatus.OK.value())
@@ -168,7 +168,7 @@ public class ClientServiceImpl implements IClientService {
             Optional<ClientEntity> clientExist = this.repository.findByClientDocument(clientDocument);
             if(clientExist.isPresent()) {
                 ClientEntity clientEntity = this.mapper.convertClientDTOToClientEntity(clientDTO);
-                if(clientExist.get().equals(clientEntity)) {
+                if (clientExist.get().equals(clientEntity)) {
                     return WrongResponseDTO.builder()
                             .exception(new ConflictException())
                             .timeStamp(LocalDateTime.now())
@@ -229,6 +229,116 @@ public class ClientServiceImpl implements IClientService {
                         .httpStatusCode(HttpStatus.NOT_FOUND.value())
                         .description("The client with document: " + clientDocument + " doesnt exist")
                         .timeStamp(LocalDateTime.now())
+                        .build();
+            }
+        } catch (Exception e) {
+            log.error(Responses.INTERNAL_SERVER_ERROR, e);
+            return WrongResponseDTO.builder()
+                    .exception(e)
+                    .timeStamp(LocalDateTime.now())
+                    .description(Responses.INTERNAL_SERVER_ERROR)
+                    .code(ResponseCodes.INTERNAL_SERVER_ERROR)
+                    .httpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .build();
+        }
+    }
+
+    @Override
+    public ObjectResponseDTO readOrderedClients(String typeOfData, String direction) {
+        try {
+            List<ClientEntity> clientEntityList = this.repository.findAll();
+            if(!clientEntityList.isEmpty()) {
+                ObjectResponseDTO response = null;
+                if(direction.equals("ASC")) {
+                    if (typeOfData.equals("DOCUMENT")) {
+                        List<ClientDTO> clientDTOListOrderedDocumentAscendant = clientEntityList.stream()
+                                .map(this.mapper::convertClientEntityToClientDTO)
+                                .sorted(Comparator.comparingLong(ClientDTO::getClientDocument))
+                                .toList();
+                        response =  CorrectResponseDTO.builder()
+                                .object(clientDTOListOrderedDocumentAscendant)
+                                .timeStamp(LocalDateTime.now())
+                                .code(ResponseCodes.OK)
+                                .description(Responses.OK)
+                                .httpStatusCode(HttpStatus.OK.value())
+                                .build();
+                    }
+                    if(typeOfData.equals("NAME")) {
+                        List<ClientDTO> clientDTOListOrderedNameAscendant = clientEntityList.stream()
+                                .map(this.mapper::convertClientEntityToClientDTO)
+                                .sorted(Comparator.comparing(ClientDTO::getClientName))
+                                .toList();
+                        response = CorrectResponseDTO.builder()
+                                .object(clientDTOListOrderedNameAscendant)
+                                .timeStamp(LocalDateTime.now())
+                                .code(ResponseCodes.OK)
+                                .description(Responses.OK)
+                                .httpStatusCode(HttpStatus.OK.value())
+                                .build();
+                    }
+                    if(typeOfData.equals("ADDRESS")) {
+                        List<ClientDTO> clientDTOListOrderedAddressAscendant = clientEntityList.stream()
+                                .map(this.mapper::convertClientEntityToClientDTO)
+                                .sorted(Comparator.comparing(ClientDTO::getClientAddress))
+                                .toList();
+                        response = CorrectResponseDTO.builder()
+                                .object(clientDTOListOrderedAddressAscendant)
+                                .timeStamp(LocalDateTime.now())
+                                .code(ResponseCodes.OK)
+                                .description(Responses.OK)
+                                .httpStatusCode(HttpStatus.OK.value())
+                                .build();
+                    }
+                }
+                if (direction.equals("DESC")) {
+                    if(typeOfData.equals("DOCUMENT")) {
+                        List<ClientDTO> clientDTOListOrderedDocumentDescendant = clientEntityList.stream()
+                                .map(this.mapper::convertClientEntityToClientDTO)
+                                .sorted(Comparator.comparingLong(ClientDTO::getClientDocument).reversed())
+                                .toList();
+                        response = CorrectResponseDTO.builder()
+                                .object(clientDTOListOrderedDocumentDescendant)
+                                .timeStamp(LocalDateTime.now())
+                                .code(ResponseCodes.OK)
+                                .description(Responses.OK)
+                                .httpStatusCode(HttpStatus.OK.value())
+                                .build();
+                    }
+                    if(typeOfData.equals("NAME")) {
+                        List<ClientDTO> clientDTOListOrderedNameDescendant = clientEntityList.stream()
+                                .map(this.mapper::convertClientEntityToClientDTO)
+                                .sorted(Comparator.comparing(ClientDTO::getClientName, Comparator.reverseOrder()))
+                                .toList();
+                        response = CorrectResponseDTO.builder()
+                                .object(clientDTOListOrderedNameDescendant)
+                                .timeStamp(LocalDateTime.now())
+                                .code(ResponseCodes.OK)
+                                .description(Responses.OK)
+                                .httpStatusCode(HttpStatus.OK.value())
+                                .build();
+                    }
+                    if (typeOfData.equals("ADDRESS")) {
+                        List<ClientDTO> clientDTOListOrderedAddressDescendant = clientEntityList.stream()
+                                .map(this.mapper::convertClientEntityToClientDTO)
+                                .sorted(Comparator.comparing(ClientDTO::getClientAddress, Comparator.reverseOrder()))
+                                .toList();
+                        response = CorrectResponseDTO.builder()
+                                .object(clientDTOListOrderedAddressDescendant)
+                                .timeStamp(LocalDateTime.now())
+                                .code(ResponseCodes.OK)
+                                .description(Responses.OK)
+                                .httpStatusCode(HttpStatus.OK.value())
+                                .build();
+                    }
+                }
+                return response;
+            } else {
+                return WrongResponseDTO.builder()
+                        .exception(new NotFoundException())
+                        .timeStamp(LocalDateTime.now())
+                        .description("There are no registers in the table")
+                        .code(ResponseCodes.NO_DATA_IN_TABLE)
+                        .httpStatusCode(HttpStatus.NOT_FOUND.value())
                         .build();
             }
         } catch (Exception e) {

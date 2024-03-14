@@ -14,4 +14,5 @@ public interface IClientService {
     ObjectResponseDTO readAllClients();
     ObjectResponseDTO updateClient(Long clientDocument, ClientDTO clientDTO);
     ObjectResponseDTO deleteClient(Long clientDocument);
+    ObjectResponseDTO readOrderedClients(String typeOfData, String direction);
 }

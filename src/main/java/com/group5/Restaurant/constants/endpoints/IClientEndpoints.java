@@ -10,4 +10,5 @@ public interface IClientEndpoints {
     String CLIENT_READ_ALL = "/read_all";
     String CLIENT_UPDATE = "/update/{clientDocument}";
     String CLIENT_DELETE = "/delete/{clientDocument}";
+    String CLIENT_ORDER = "/order/{typeOfData}/direction/{direction}";
 }

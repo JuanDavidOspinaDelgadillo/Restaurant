@@ -60,7 +60,7 @@ public class OrderControllerImpl implements IOrderController {
      * @throws BadRequestException When the data is not valid
      */
     @Override
-    @PutMapping(IOrderEndpoints.ORDER_UPDATE)
+    @PatchMapping(IOrderEndpoints.ORDER_UPDATE)
     @Operation(summary = "Create a new order")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = Responses.OK, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),

@@ -12,4 +12,5 @@ public interface IProductService {
     ObjectResponseDTO readAllProducts();
     ObjectResponseDTO updateProduct(ProductDTO productDTO);
     ObjectResponseDTO deleteProduct(String productUUID);
+    ObjectResponseDTO readAllProductsByFantasyName(String productFantasyName);
 }

@@ -120,4 +120,18 @@ public class ClientControllerImpl implements IClientController {
         this.clientDTOValidation.validateClientDocument(clientDocument);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.service.deleteClient(clientDocument));
     }
+
+    @Override
+    @GetMapping(IClientEndpoints.CLIENT_ORDER)
+    @Operation(summary = "Delete a client")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = Responses.OK, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "400", description = Responses.BAD_REQUEST, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "409", description = Responses.CONFLICT, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "500", description = Responses.INTERNAL_SERVER_ERROR, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))})
+    })
+    public ResponseEntity<ObjectResponseDTO> getClientsOrdered(@PathVariable String typeOfData,@PathVariable String direction) throws BadRequestException {
+        this.clientDTOValidation.validateTypeOfDataAndDirection(typeOfData, direction);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.service.readOrderedClients(typeOfData, direction));
+    }
 }

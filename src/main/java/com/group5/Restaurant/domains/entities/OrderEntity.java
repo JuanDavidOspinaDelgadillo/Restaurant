@@ -21,7 +21,7 @@ public class OrderEntity {
     @Column(name = "order_id")
     private Long orderId;
 
-    @Column(name = "order_date_")
+    @Column(name = "order_creation_date_and_time")
     private LocalDateTime orderCreationDateAndTime;
 
     @Column(name = "addresses_quantity_of_product")

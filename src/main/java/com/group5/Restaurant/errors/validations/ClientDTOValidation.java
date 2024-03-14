@@ -6,7 +6,9 @@ import com.group5.Restaurant.errors.exceptions.BadRequestException;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class ClientDTOValidation {
@@ -22,6 +24,18 @@ public class ClientDTOValidation {
 
     public void validateClientDocument(Long clientDocument) throws BadRequestException {
         if(clientDocument == null || clientDocument <= 0)
+            throw new BadRequestException(ResponseCodes.NULL_OR_INVALID_DATA);
+    }
+
+    public void validateTypeOfDataAndDirection(String typeOfData, String direction) throws BadRequestException{
+        Set<String> possibleTypeOfData = new HashSet<>();
+        possibleTypeOfData.add("DOCUMENT");
+        possibleTypeOfData.add("NAME");
+        possibleTypeOfData.add("ADDRESS");
+        Set<String> possibleDirections = new HashSet<>();
+        possibleDirections.add("ASC");
+        possibleDirections.add("DESC");
+        if(typeOfData.isEmpty() || direction.isEmpty() || !possibleTypeOfData.contains(typeOfData) || !possibleDirections.contains(direction))
             throw new BadRequestException(ResponseCodes.NULL_OR_INVALID_DATA);
     }
 }

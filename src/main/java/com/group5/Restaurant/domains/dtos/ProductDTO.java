@@ -1,8 +1,10 @@
 package com.group5.Restaurant.domains.dtos;
 
+import com.group5.Restaurant.domains.entities.OrderEntity;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -19,4 +21,5 @@ public class ProductDTO implements Serializable {
     private String productDescription;
     private Double productPrice;
     private Boolean isProductAvailable;
+    private List<OrderEntity> orderEntityList;
 }

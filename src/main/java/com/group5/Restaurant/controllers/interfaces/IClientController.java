@@ -23,4 +23,6 @@ public interface IClientController {
     ResponseEntity<ObjectResponseDTO> updateClient(Long clientDocument, ClientDTO clientDTO) throws BadRequestException;
     @DeleteMapping
     ResponseEntity<ObjectResponseDTO> deleteClient(Long clientDocument) throws BadRequestException;
+    @GetMapping
+    ResponseEntity<ObjectResponseDTO> getClientsOrdered(String typeOfData, String direction) throws BadRequestException;
 }

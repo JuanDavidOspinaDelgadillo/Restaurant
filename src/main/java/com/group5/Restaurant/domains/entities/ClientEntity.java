@@ -38,5 +38,5 @@ public class ClientEntity {
     @OneToMany(mappedBy = "clientEntity", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
     @JsonIgnore
-    private List<OrderEntity> addressesEntity;
+    private List<OrderEntity> orderEntityList;
 }

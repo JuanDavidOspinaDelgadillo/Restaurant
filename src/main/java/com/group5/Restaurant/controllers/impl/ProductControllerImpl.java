@@ -3,6 +3,7 @@ package com.group5.Restaurant.controllers.impl;
 
 import com.group5.Restaurant.constants.endpoints.IProductEndpoints;
 import com.group5.Restaurant.constants.responses.rawResponses.Responses;
+import com.group5.Restaurant.constants.responses.responseCodes.ResponseCodes;
 import com.group5.Restaurant.domains.dtos.ProductDTO;
 import com.group5.Restaurant.constants.responses.objectResponseDTO.ObjectResponseDTO;
 import com.group5.Restaurant.controllers.interfaces.IProductController;
@@ -99,7 +100,7 @@ public class ProductControllerImpl implements IProductController {
     }
 
     /**
-     *
+     *Delete a product
      * @param productUUID ID reference of the product
      * @return deleteProduct of the service
      */
@@ -115,5 +116,26 @@ public class ProductControllerImpl implements IProductController {
     public ResponseEntity<ObjectResponseDTO> deleteProduct(@PathVariable String productUUID) throws BadRequestException {
         this.productDTOValidation.validateProductUUID(productUUID);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.service.deleteProduct(productUUID));
+    }
+
+    /**
+     * Gives all the products by a fantasy name
+     * @param productFantasyName Fantasy name reference to search the products
+     * @return readAllProductsByFantasyName of the service
+     * @throws BadRequestException When the data entered is not valid
+     */
+    @Override
+    @GetMapping(IProductEndpoints.PRODUCT_READ_BY_FANTASY_NAME)
+    @Operation(summary = "Search all the products with an specific fantasy name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = Responses.OK, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "400", description = Responses.BAD_REQUEST, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "409", description = Responses.CONFLICT, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))}),
+            @ApiResponse(responseCode = "500", description = Responses.INTERNAL_SERVER_ERROR, content = {@Content(mediaType = "application/json", schema = @Schema(implementation = ObjectResponseDTO.class))})
+    })
+    public ResponseEntity<ObjectResponseDTO> getAllProductsByFantasyName(@PathVariable String productFantasyName) throws BadRequestException {
+        if (productFantasyName.isEmpty())
+            throw new BadRequestException(ResponseCodes.NULL_OR_INVALID_DATA);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(this.service.readAllProductsByFantasyName(productFantasyName));
     }
 }

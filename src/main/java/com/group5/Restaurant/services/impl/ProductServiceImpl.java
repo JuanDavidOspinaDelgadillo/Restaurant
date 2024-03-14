@@ -20,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,11 +47,10 @@ public class ProductServiceImpl implements IProductService {
             Optional<ProductEntity> productExist = this.repository.findByProductUUID(productDTO.getProductUUID());
             if(productExist.isEmpty()) {
                 ProductEntity productEntity = this.mapper.convertProductDTOToProductEntity(productDTO);
-                productEntity.setAddresesList(null);
                 this.repository.save(productEntity);
                 return CorrectResponseDTO.builder()
                         .code(ResponseCodes.OK)
-                        .description("The product was created succesful")
+                        .description(Responses.OK)
                         .timeStamp(LocalDateTime.now())
                         .httpStatusCode(HttpStatus.OK.value())
                         .object(productDTO)
@@ -59,7 +59,7 @@ public class ProductServiceImpl implements IProductService {
                 return WrongResponseDTO.builder()
                         .exception(new NotFoundException())
                         .timeStamp(LocalDateTime.now())
-                        .description("The product already exist")
+                        .description(Responses.NOT_FOUND)
                         .code(ResponseCodes.ALREADY_EXIST)
                         .httpStatusCode(HttpStatus.NOT_FOUND.value())
                         .build();
@@ -89,7 +89,7 @@ public class ProductServiceImpl implements IProductService {
                 ProductDTO productDTO = this.mapper.converterProductEntityToProductDTO(productExist.get());
                 return CorrectResponseDTO.builder()
                         .code(ResponseCodes.OK)
-                        .description("The product exists")
+                        .description(Responses.OK)
                         .timeStamp(LocalDateTime.now())
                         .httpStatusCode(HttpStatus.OK.value())
                         .object(productDTO)
@@ -98,7 +98,7 @@ public class ProductServiceImpl implements IProductService {
                 return WrongResponseDTO.builder()
                         .exception(new NotFoundException())
                         .timeStamp(LocalDateTime.now())
-                        .description("The product doesnt exist")
+                        .description(Responses.NOT_FOUND)
                         .code(ResponseCodes.DOESNT_EXIST)
                         .httpStatusCode(HttpStatus.NOT_FOUND.value())
                         .build();
@@ -129,7 +129,7 @@ public class ProductServiceImpl implements IProductService {
                         .toList();
                 return CorrectResponseDTO.builder()
                         .code(ResponseCodes.OK)
-                        .description("There are products registered")
+                        .description(Responses.OK)
                         .timeStamp(LocalDateTime.now())
                         .httpStatusCode(HttpStatus.OK.value())
                         .object(productDTOList)
@@ -138,7 +138,7 @@ public class ProductServiceImpl implements IProductService {
                 return WrongResponseDTO.builder()
                         .exception(new NotFoundException())
                         .timeStamp(LocalDateTime.now())
-                        .description("There are not products registered")
+                        .description(Responses.NOT_FOUND)
                         .code(ResponseCodes.NO_DATA_IN_TABLE)
                         .httpStatusCode(HttpStatus.NOT_FOUND.value())
                         .build();
@@ -163,14 +163,14 @@ public class ProductServiceImpl implements IProductService {
     @Override
     public ObjectResponseDTO updateProduct(ProductDTO productDTO) {
             try{
-                Optional<ProductEntity> find = this.repository.findByProductUUID(productDTO.getProductUUID());
-                if (find.isPresent()){
+                Optional<ProductEntity> productExist = this.repository.findByProductUUID(productDTO.getProductUUID());
+                if (productExist.isPresent()){
                     ProductEntity productEntity = this.mapper.convertProductDTOToProductEntity(productDTO);
-                    if(find.get().equals(productEntity)){
+                    if(productExist.get().equals(productEntity)){
                         return WrongResponseDTO.builder()
                                 .exception(new ConflictException())
                                 .code(ResponseCodes.DOESNT_HAVE_CHANGES)
-                                .description("The objects are the same")
+                                .description(Responses.CONFLICT)
                                 .httpStatusCode(HttpStatus.CONFLICT.value())
                                 .timeStamp(LocalDateTime.now())
                                 .build();
@@ -178,7 +178,7 @@ public class ProductServiceImpl implements IProductService {
                     this.repository.save(productEntity);
                     return CorrectResponseDTO.builder()
                             .code(ResponseCodes.OK)
-                            .description("Product updated")
+                            .description(Responses.OK)
                             .timeStamp(LocalDateTime.now())
                             .httpStatusCode(HttpStatus.OK.value())
                             .object(productDTO)
@@ -187,7 +187,7 @@ public class ProductServiceImpl implements IProductService {
                     return WrongResponseDTO.builder()
                             .exception(new NotFoundException())
                             .timeStamp(LocalDateTime.now())
-                            .description("The product doesnt exist")
+                            .description(Responses.NOT_FOUND)
                             .code(ResponseCodes.DOESNT_EXIST)
                             .httpStatusCode(HttpStatus.NOT_FOUND.value())
                             .build();
@@ -218,7 +218,7 @@ public class ProductServiceImpl implements IProductService {
                 ProductDTO productDTO = this.mapper.converterProductEntityToProductDTO(find.get());
                 return CorrectResponseDTO.builder()
                         .code(ResponseCodes.OK)
-                        .description("Product deleted")
+                        .description(Responses.OK)
                         .timeStamp(LocalDateTime.now())
                         .httpStatusCode(HttpStatus.OK.value())
                         .object(productDTO)
@@ -227,12 +227,54 @@ public class ProductServiceImpl implements IProductService {
                 return WrongResponseDTO.builder()
                         .exception(new NotFoundException())
                         .timeStamp(LocalDateTime.now())
-                        .description("The product doesnt exist")
+                        .description(Responses.NOT_FOUND)
                         .code(ResponseCodes.DOESNT_EXIST)
                         .httpStatusCode(HttpStatus.NOT_FOUND.value())
                         .build();
             }
         }catch (Exception e){
+            log.error(Responses.INTERNAL_SERVER_ERROR, e);
+            return WrongResponseDTO.builder()
+                    .exception(e)
+                    .timeStamp(LocalDateTime.now())
+                    .description(Responses.INTERNAL_SERVER_ERROR)
+                    .code(ResponseCodes.INTERNAL_SERVER_ERROR)
+                    .httpStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                    .build();
+        }
+    }
+
+    /**
+     * Gives a list sorted of clients by theirs fantasy name
+     * @param productFantasyName Fantasy name reference to search the products
+     * @return Information referred to the operation result
+     */
+    @Override
+    public ObjectResponseDTO readAllProductsByFantasyName(String productFantasyName) {
+        try {
+            List<ProductEntity> productEntityListFantasyName = this.repository.findAllByProductFantasyName(productFantasyName);
+            if(!productEntityListFantasyName.isEmpty()) {
+                List<ProductDTO> productDTOListFantasyName = productEntityListFantasyName.stream()
+                        .map(this.mapper::converterProductEntityToProductDTO)
+                        .sorted(Comparator.comparing(ProductDTO::getProductFantasyName))
+                        .toList();
+                return CorrectResponseDTO.builder()
+                        .httpStatusCode(HttpStatus.OK.value())
+                        .code(ResponseCodes.OK)
+                        .object(productDTOListFantasyName)
+                        .description(Responses.OK)
+                        .timeStamp(LocalDateTime.now())
+                        .build();
+            } else {
+                return WrongResponseDTO.builder()
+                        .exception(new NotFoundException())
+                        .timeStamp(LocalDateTime.now())
+                        .httpStatusCode(HttpStatus.NOT_FOUND.value())
+                        .description(Responses.NOT_FOUND)
+                        .code(ResponseCodes.NO_DATA_IN_TABLE)
+                        .build();
+            }
+        } catch (Exception e) {
             log.error(Responses.INTERNAL_SERVER_ERROR, e);
             return WrongResponseDTO.builder()
                     .exception(e)

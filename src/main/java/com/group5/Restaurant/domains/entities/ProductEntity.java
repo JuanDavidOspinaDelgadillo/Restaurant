@@ -40,15 +40,5 @@ public class ProductEntity {
     @OneToMany(mappedBy = "productEntity", cascade = CascadeType.ALL)
     @Fetch(FetchMode.SELECT)
     @JsonIgnore
-    private List<OrderEntity> addresesList;
-
-    public enum Category{
-        HAMBURGERS_AND_HOT_DOGS,
-        CHICKEN,
-        FISH,
-        MEATS,
-        DESSERTS,
-        VEGAN_FOOD,
-        KIDS_MEAL
-    }
+    private List<OrderEntity> orderEntityList;
 }

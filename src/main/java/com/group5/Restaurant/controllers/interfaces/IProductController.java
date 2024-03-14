@@ -17,4 +17,6 @@ public interface IProductController {
     ResponseEntity<ObjectResponseDTO> updateProduct(@PathVariable String productUUID, @RequestBody ProductDTO productDTO) throws BadRequestException;
     @DeleteMapping
     ResponseEntity<ObjectResponseDTO> deleteProduct(@PathVariable String productUUID) throws BadRequestException;
+    @GetMapping
+    ResponseEntity<ObjectResponseDTO> getAllProductsByFantasyName(@PathVariable String productFantasyName) throws BadRequestException;
 }

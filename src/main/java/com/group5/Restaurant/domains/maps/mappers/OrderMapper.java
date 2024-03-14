@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 @Component
 public class OrderMapper {
 
-    public OrderEntity convertOrderDTOToOrderEntity(OrderDTO orderDTO) {
-        OrderEntity orderEntity = new OrderEntity();
-        try {
-            orderEntity = Mapper.modelMapper().map(orderDTO, OrderEntity.class);
-        } catch (Exception e) {
-            log.error(Responses.INTERNAL_SERVER_ERROR, e);
+        public OrderEntity convertOrderDTOToOrderEntity(OrderDTO orderDTO) {
+            OrderEntity orderEntity = new OrderEntity();
+            try {
+                orderEntity = Mapper.modelMapper().map(orderDTO, OrderEntity.class);
+            } catch (Exception e) {
+                log.error(Responses.INTERNAL_SERVER_ERROR, e);
+            }
+            return orderEntity;
         }
-        return orderEntity;
-    }
 
     public OrderDTO convertOrderEntityToOrderDTO(OrderEntity orderEntity) {
         OrderDTO orderDTO = new OrderDTO();

@@ -10,4 +10,5 @@ public interface IProductEndpoints {
     String PRODUCT_READ_ALL = "/read_all";
     String PRODUCT_UPDATE = "/update/{productUUID}";
     String PRODUCT_DELETE = "/delete/{productUUID}";
+    String PRODUCT_READ_BY_FANTASY_NAME = "/products/search?q={productFantasyName}";
 }

@@ -4,36 +4,37 @@ import com.group5.Restaurant.constants.responses.objectResponseDTO.CorrectRespon
 import com.group5.Restaurant.constants.responses.objectResponseDTO.ObjectResponseDTO;
 import com.group5.Restaurant.constants.responses.rawResponses.Responses;
 import com.group5.Restaurant.constants.responses.responseCodes.ResponseCodes;
-import com.group5.Restaurant.domains.dtos.ClientDTO;
+import com.group5.Restaurant.domains.dtos.ProductDTO;
 import com.group5.Restaurant.errors.exceptions.BadRequestException;
-import com.group5.Restaurant.errors.validations.ClientDTOValidation;
-import com.group5.Restaurant.services.interfaces.IClientService;
+import com.group5.Restaurant.errors.validations.ProductDTOValidation;
+import com.group5.Restaurant.services.interfaces.IProductService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-class ClientControllerImplTest {
+public class ProductControllerImplTest {
 
     @InjectMocks
-    ClientControllerImpl controller;
+    ProductControllerImpl controller;
     @Mock
-    IClientService service;
+    IProductService service;
     @Mock
-    ClientDTOValidation validator;
+    ProductDTOValidation validator;
 
     @Test
-    void testCreateClient_whenClientDTOIsValid() throws BadRequestException {
-        ClientDTO clientDTO = new ClientDTO();
+    void testCreateProduct_when_ProductDTOIsValid() throws BadRequestException {
+        ProductDTO productDTO = new ProductDTO();
         ResponseEntity<ObjectResponseDTO> expectedResponse = ResponseEntity.status(HttpStatus.ACCEPTED)
                 .body(CorrectResponseDTO.builder()
                         .httpStatusCode(HttpStatus.OK.value())
@@ -41,11 +42,11 @@ class ClientControllerImplTest {
                         .description(Responses.OK)
                         .timeStamp(LocalDateTime.now())
                         .code(ResponseCodes.OK)
-                        .object(clientDTO)
+                        .object(productDTO)
                         .build());
-        doNothing().when(this.validator).validateClientDTO(clientDTO);
-        when(service.createClient(clientDTO)).thenReturn(expectedResponse.getBody());
-        ResponseEntity<ObjectResponseDTO> responseEntity = this.controller.createClient(clientDTO);
+        doNothing().when(this.validator).validateProductDTO(productDTO);
+        when(this.service.createProduct(productDTO)).thenReturn(expectedResponse.getBody());
+        ResponseEntity<ObjectResponseDTO> responseEntity = this.controller.createProduct(productDTO);
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals(expectedResponse.getBody(), responseEntity.getBody());
     }

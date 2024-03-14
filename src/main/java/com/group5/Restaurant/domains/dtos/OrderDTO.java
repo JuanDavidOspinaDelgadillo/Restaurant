@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderDTO implements Serializable {
+    private LocalDateTime orderCreationDateAndTime;
     private Short orderQuantity;
     private String orderAdditionalInformation;
     private Double orderSubTotal;
